@@ -46,18 +46,18 @@ void TriangleModel::interpolate(TriCoord point, Point2d & result)
 	result.x = 0.0;
 	result.y = 0.0;
 	int k = 0;
-	double sum_check = 0.0;
+	//double sum_check = 0.0;
 	for (int i = 0; i <= order; i++) {
 		for (int j = 0; j <= i; j++) {
 			TriNode& n = nodes[k];
 			double weight = lagrangian(n, point);
 			result.x += weight * controlPoints[k].x;
 			result.y += weight * controlPoints[k].y;
-			sum_check += weight;
+			//sum_check += weight;
 			k++;
 		}
 	}
-	cout << "sum = " << sum_check << endl;
+	//cout << "sum = " << sum_check << endl;
 }
 
 void TriangleModel::update()
@@ -87,20 +87,20 @@ TriangleModel::TriangleModel(int order) : order(order)
 		for (int j = 0; j <= i; j++)
 			nodes.push_back(TriNode{ order - i, j, i - j });
 
-	double zoom = 20.0;
+	double zoom = 200.0;
 	for (TriNode& node : nodes)
 		controlPoints.push_back(Point2d{ zoom*double(node.a) / order, zoom*double(node.b) / order });
 
 	const int resolution = 10;
-
-	for (int i = 1; i <= order; i++) {
+	const int density = 5;
+	for (int i = 1; i <= order * density; i++) {
 		linesCoordToDraw.resize(linesCoordToDraw.size() + 3);
 		auto last1 = linesCoordToDraw.rbegin();
 		auto last2 = last1 + 1;
 		auto last3 = last2 + 1;
 		for (int j = 0; j <= i * resolution; j++) {
 			double t = double(j) / (i * resolution);
-			double alpha = double(order - i) / order;
+			double alpha = double(order * density - i) / (order * density);
 			last1->push_back(TriCoord{ alpha,(1 - alpha) * t, (1 - alpha) * (1 - t) });
 			last2->push_back(TriCoord{ (1 - alpha) * (1 - t) ,alpha,(1 - alpha) * t });
 			last3->push_back(TriCoord{ (1 - alpha) * t, (1 - alpha) * (1 - t),alpha, });

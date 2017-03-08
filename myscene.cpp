@@ -76,6 +76,10 @@ void myScene::updateData()
 		}
 		auto* pathItem = new QGraphicsPathItem;
 		pathItem->setPath(path);
+		QPen pen;
+		pen.setWidth(1);
+		pen.setCosmetic(true);
+		pathItem->setPen(pen);
 		paths.append(pathItem);
 	}
 	curves = this->createItemGroup(paths);

@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     // viewer
     this->markerViewer = new MarkerImageView(this);
-    auto triangle3 = new TriangleModel(2);
+    auto triangle3 = new TriangleModel(3);
     this->markerViewer->setCoreData(triangle3);
 
     QTabWidget *centerTab = new QTabWidget;

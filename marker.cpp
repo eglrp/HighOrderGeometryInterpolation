@@ -7,8 +7,8 @@ Marker::Marker(int row)
     setFlags(ItemIsSelectable|ItemIsMovable);
     setAcceptHoverEvents(true);
     setZValue(10);
-    radius=24.0;
-    innerRadius=15.0;
+    radius=20.0;
+    innerRadius=10.0;
     this->color=this->idToColor(row);
 }
 
