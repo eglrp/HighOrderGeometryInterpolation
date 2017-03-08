@@ -3,24 +3,59 @@
 #include <QtWidgets>
 #include <QPushButton>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent)
+void MainWindow::changeDegree(int degree)
 {
-    // viewer
-    this->markerViewer = new MarkerImageView(this);
-    auto triangle3 = new TriangleModel(3);
-    this->markerViewer->setCoreData(triangle3);
+	if (degree > 0 && degree < 10) {
+		model = new TriangleModel(degree);
+		this->scene->setCoreData(model);
+	}
+}
 
-    QTabWidget *centerTab = new QTabWidget;
-    centerTab->addTab(this->markerViewer, "Viewer");
+void MainWindow::resetControlPoints()
+{
+	this->model->reset();
+	this->scene->updateData();
+}
+
+MainWindow::MainWindow(QWidget *parent) :
+	QMainWindow(parent)
+{
+
+	this->scene = new myScene;
+	this->model = new TriangleModel(2);
+	this->scene->setCoreData(model);
+	// viewer
+	this->markerViewer = new MarkerImageView(this);
+	this->markerViewer->setScene(scene);
+
+	auto *centerTab = new QTabWidget;
+	centerTab->addTab(this->markerViewer, "Viewer");
+
+
+	//buttons
+	auto *reset = new QPushButton(tr("Reset"));
+	auto *resetNonVertex = new QPushButton(tr("Reset non vertex"));
+	auto *lay1 = new QHBoxLayout;
+	lay1->addWidget(new QLabel(tr("Degree")));
+	auto * degreeBox = new QSpinBox;
+	connect(degreeBox, SIGNAL(valueChanged(int)), this, SLOT(changeDegree(int)));
+	connect(reset, SIGNAL(clicked(bool)), this, SLOT(resetControlPoints()));
+	lay1->addWidget(degreeBox);
+
+	auto *layout = new QVBoxLayout;
+	layout->addWidget(reset);
+	layout->addWidget(resetNonVertex);
+	layout->addLayout(lay1);
 
 
 
-    // layout
-    QSplitter *centerSp = new QSplitter(Qt::Vertical);
-    centerSp->addWidget(centerTab);
+	// layout
+	auto *splitter = new QSplitter;
+	splitter->addWidget(centerTab);
+	auto *temp = new QWidget;
+	temp->setLayout(layout);
+	splitter->addWidget(temp);
+	this->setCentralWidget(splitter);
 
-    this->setCentralWidget(centerSp);
-
-    this->resize(800, 600);
+	this->resize(800, 600);
 }

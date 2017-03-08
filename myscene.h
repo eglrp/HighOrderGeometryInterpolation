@@ -16,10 +16,10 @@ public:
     myScene(QObject *parent = 0);
     void setCoreData(InterpolationModel *core);
     void setZoomScale(double scale);
+    void updateData();
 private slots:
     void onMarkerMoved(QObject *markerFormMapper);
 private:
-    void updateData();
     void removeMarker(int id);
     void resizeMarkers();
     void resizeMarker(int id);

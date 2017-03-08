@@ -23,6 +23,7 @@ void myScene::setCoreData(InterpolationModel *core)
 	this->coreData = core;
 	this->clear();
 	this->markerList.clear();
+	this->curves = nullptr;
 	const std::vector<Point2d>& points = this->coreData->getControlPoints();
 	for (auto & p : points) {
 		Marker *marker = this->appendMarker(p.x, p.y);
@@ -56,11 +57,14 @@ void myScene::updateData()
 {
 	if (curves) {
 		this->removeItem(curves);
-		delete curves;
+		//this->destroyItemGroup(curves);
+		//delete curves;
 		curves = nullptr;
 	}
 	const std::vector<std::vector<Point2d>>& lines = this->coreData->getLinesToDraw();
-	QList<QGraphicsItem *> paths;
+	curves = new QGraphicsItemGroup;
+
+	this->addItem(curves);
 	for (auto& line : lines) {
 		QPainterPath path;
 		bool first = true;
@@ -80,9 +84,8 @@ void myScene::updateData()
 		pen.setWidth(1);
 		pen.setCosmetic(true);
 		pathItem->setPen(pen);
-		paths.append(pathItem);
+		curves->addToGroup(pathItem);
 	}
-	curves = this->createItemGroup(paths);
 	//this->setSceneRect(this->itemsBoundingRect());
 }
 

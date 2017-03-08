@@ -23,7 +23,6 @@ public:
         InsertItem, MoveItem
     };
     MarkerImageView(QWidget *parent = 0);
-    void setCoreData(InterpolationModel* core);
     void loadImage(const QImage &image);
 protected:
     void wheelEvent(QWheelEvent *event);

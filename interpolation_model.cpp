@@ -60,6 +60,14 @@ void TriangleModel::interpolate(TriCoord point, Point2d & result)
 	//cout << "sum = " << sum_check << endl;
 }
 
+void TriangleModel::resetControlPoints()
+{
+	controlPoints.clear();
+	double zoom = 200.0;
+	for (TriNode& node : nodes)
+		controlPoints.push_back(Point2d{ zoom*double(node.a) / order, zoom*double(node.b) / order });
+}
+
 void TriangleModel::update()
 {
 	linesToDraw.clear();
@@ -86,10 +94,7 @@ TriangleModel::TriangleModel(int order) : order(order)
 	for (int i = 0; i <= order; i++)
 		for (int j = 0; j <= i; j++)
 			nodes.push_back(TriNode{ order - i, j, i - j });
-
-	double zoom = 200.0;
-	for (TriNode& node : nodes)
-		controlPoints.push_back(Point2d{ zoom*double(node.a) / order, zoom*double(node.b) / order });
+	this->resetControlPoints();
 
 	const int resolution = 10;
 	const int density = 5;
@@ -107,5 +112,34 @@ TriangleModel::TriangleModel(int order) : order(order)
 		}
 	}
 
+	update();
+}
+
+void TriangleModel::reset()
+{
+	resetControlPoints();
+	update();
+}
+
+void TriangleModel::resetNonVertex()
+{
+	nodes.clear();
+	double zoom = 200.0;
+	Point2d a, b, c;
+	a = controlPoints[0];
+	b = controlPoints[(1 + order)*order / 2];
+	c = controlPoints.back();
+	controlPoints.clear();
+	int k = 0;
+	for (int i = 0; i <= order; i++)
+		for (int j = 0; j <= i; j++) {
+			TriNode n = nodes[k];
+			TriCoord coord{ double(n.a) / order ,double(n.b) / order ,double(n.c) / order };
+			Point2d result{ 0.0,0.0 };
+			result.x = coord.l1 * a.x + coord.l2 * b.x + coord.l3 * c.x;
+			result.y = coord.l1 * a.y + coord.l2 * b.y + coord.l3 * c.y;
+			controlPoints.push_back(result);
+			k++;
+		}
 	update();
 }

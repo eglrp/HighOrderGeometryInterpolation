@@ -10,14 +10,7 @@
 MarkerImageView::MarkerImageView(QWidget *parent) :
     QGraphicsView(parent)
 {
-    scene = new myScene(this);
-    setScene(scene);
     setDragMode(QGraphicsView::ScrollHandDrag);
-}
-
-void MarkerImageView::setCoreData(InterpolationModel * core)
-{
-    this->scene->setCoreData(core);
 }
 
 void MarkerImageView::loadImage(const QImage &image)

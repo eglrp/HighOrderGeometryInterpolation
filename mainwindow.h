@@ -3,13 +3,21 @@
 
 #include <QMainWindow>
 #include "markerimageview.h"
+#include "myscene.h"
+#include "interpolation_model.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+public slots:
+
+    void changeDegree(int degree);
+    void resetControlPoints();
 public:
     MainWindow(QWidget *parent = 0);
     MarkerImageView *markerViewer;
+    myScene* scene;
+    InterpolationModel* model;
 };
 
 #endif // MAINWINDOW_H

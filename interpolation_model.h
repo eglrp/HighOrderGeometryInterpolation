@@ -16,6 +16,8 @@ public:
 	const std::vector<Point2d>& getControlPoints();
 	void setControlPoints(std::vector<Point2d>& points);
 	const std::vector<std::vector<Point2d>>& getLinesToDraw();
+	virtual void reset() = 0;
+	virtual void resetNonVertex() = 0;
 };
 
 class TriangleModel : public InterpolationModel {
@@ -31,9 +33,11 @@ class TriangleModel : public InterpolationModel {
 	double lagrangian(TriNode node, TriCoord coord);
 	double function_N(int a, double l);
 	void interpolate(TriCoord point, Point2d& result);
+	void resetControlPoints();
 protected:
 	void update() override;
 public:
 	TriangleModel(int order);
-	
+	void reset()override;
+	void resetNonVertex()override;
  };
