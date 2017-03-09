@@ -17,6 +17,7 @@ public:
     void setCoreData(InterpolationModel *core);
     void setZoomScale(double scale);
     void updateData();
+	void resetMarkers();
 private slots:
     void onMarkerMoved(QObject *markerFormMapper);
 private:

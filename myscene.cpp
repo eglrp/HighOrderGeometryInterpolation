@@ -21,15 +21,7 @@ void myScene::setCoreData(InterpolationModel *core)
 		delete this->coreData;
 	}
 	this->coreData = core;
-	this->clear();
-	this->markerList.clear();
-	this->curves = nullptr;
-	const std::vector<Point2d>& points = this->coreData->getControlPoints();
-	for (auto & p : points) {
-		Marker *marker = this->appendMarker(p.x, p.y);
-	}
-	this->updateData();
-
+	this->resetMarkers();
 }
 
 void myScene::setZoomScale(double scale)
@@ -47,7 +39,6 @@ void myScene::onMarkerMoved(QObject *markerFormMapper)
 		double y = (*it)->pos().y();
 		points.push_back(Point2d{ x,y });
 	}
-	cout << "moved" << endl;
 	this->coreData->setControlPoints(points);
 	this->updateData();
 }
@@ -87,6 +78,18 @@ void myScene::updateData()
 		curves->addToGroup(pathItem);
 	}
 	//this->setSceneRect(this->itemsBoundingRect());
+}
+
+void myScene::resetMarkers()
+{
+	this->clear();
+	this->markerList.clear();
+	this->curves = nullptr;
+	const std::vector<Point2d>& points = this->coreData->getControlPoints();
+	for (auto & p : points) {
+		Marker *marker = this->appendMarker(p.x, p.y);
+	}
+	this->updateData();
 }
 
 void myScene::removeMarker(int id)

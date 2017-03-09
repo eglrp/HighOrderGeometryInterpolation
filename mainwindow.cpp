@@ -14,7 +14,13 @@ void MainWindow::changeDegree(int degree)
 void MainWindow::resetControlPoints()
 {
 	this->model->reset();
-	this->scene->updateData();
+	this->scene->resetMarkers();
+}
+
+void MainWindow::resetNonVertex()
+{
+	this->model->resetNonVertex();
+	this->scene->resetMarkers();
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -26,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->scene->setCoreData(model);
 	// viewer
 	this->markerViewer = new MarkerImageView(this);
-	this->markerViewer->setScene(scene);
+	this->markerViewer->setMyScene(scene);
 
 	auto *centerTab = new QTabWidget;
 	centerTab->addTab(this->markerViewer, "Viewer");
@@ -40,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	auto * degreeBox = new QSpinBox;
 	connect(degreeBox, SIGNAL(valueChanged(int)), this, SLOT(changeDegree(int)));
 	connect(reset, SIGNAL(clicked(bool)), this, SLOT(resetControlPoints()));
+	connect(resetNonVertex, SIGNAL(clicked(bool)), this, SLOT(resetNonVertex()));
 	lay1->addWidget(degreeBox);
 
 	auto *layout = new QVBoxLayout;

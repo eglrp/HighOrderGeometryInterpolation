@@ -19,6 +19,12 @@ void MarkerImageView::loadImage(const QImage &image)
         scene->addPixmap(QPixmap::fromImage(image));
 }
 
+void MarkerImageView::setMyScene(myScene * scene)
+{
+	this->scene = scene;
+	this->setScene(scene);
+}
+
 void MarkerImageView::wheelEvent(QWheelEvent *event)
 {
     QPoint numPixels = event->pixelDelta();

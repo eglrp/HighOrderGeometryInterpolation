@@ -24,6 +24,7 @@ public:
     };
     MarkerImageView(QWidget *parent = 0);
     void loadImage(const QImage &image);
+	void setMyScene(myScene* scene);
 protected:
     void wheelEvent(QWheelEvent *event);
 public slots:

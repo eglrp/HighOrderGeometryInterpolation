@@ -123,7 +123,6 @@ void TriangleModel::reset()
 
 void TriangleModel::resetNonVertex()
 {
-	nodes.clear();
 	double zoom = 200.0;
 	Point2d a, b, c;
 	a = controlPoints[0];
